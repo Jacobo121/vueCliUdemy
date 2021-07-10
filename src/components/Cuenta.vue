@@ -6,8 +6,12 @@
         <div v-for="(item, index) in servicios" :key="index">
             {{index + 1 }} - {{ item }}
         </div>
-        <AccionSaldo @click="disminuir" texto="Disminuir Saldo" />
-        <AccionSaldo @click="aumentar" texto="Aumentar Saldo" />
+        <AccionSaldo 
+            @accion="disminuir" :desactivar="desactivar" texto="Disminuir Saldo" 
+        />
+        <AccionSaldo 
+            @accion="aumentar" texto="Aumentar Saldo" 
+        />
     </div>
 </template>
 <script>
@@ -20,18 +24,25 @@ export default {
     },
     data() {
         return {
-            saldo: 1000,
+            saldo: 400,
             cuenta: 'visa',
             estado: true,
-            servicios: ['giro', 'abono', 'transferencia']
+            servicios: ['giro', 'abono', 'transferencia'],
+            desactivar: false
         }
     },
 
     methods: {
         aumentar() {
             this.saldo = this.saldo + 100
+            this.desactivar = false
         },
         disminuir() {
+            if(this.saldo === 0) {
+                alert("te quedaste sin saldo, no te preocupes")
+                this.desactivar = true
+                return
+            }
             this.saldo = this.saldo - 100
         }
     },
